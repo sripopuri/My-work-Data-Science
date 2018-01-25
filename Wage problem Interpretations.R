@@ -113,26 +113,26 @@ summary(model3)
 ## Interpretations
 
 # a    For every 1year of increase in the education of the employee there
-#      is an increase of 0.54 dollar(nearly) on average hourly wage.
+#      is an increase of 0.54 dollar(nearly) on average hourly wage. (model1)
 # b    For every 1year of increase in the education of the employee there
 #      is an increase of 0.60 dollar(nearly) on average hourly wage 
-#      controlling experience and tenure of the employee
+#      controlling experience and tenure of the employee. (model2)
 # c    For every 1year of increase in the experience of the employee there
 #      is an increase of 0.02 dollar(nearly) on average hourly wage 
-#      controlling education and tenure of the employee
+#      controlling education and tenure of the employee. (model2)
 # d    For every 1year of increase in the tenure of the employee there
 #      is an increase of 0.17 dollar(nearly) on average hourly wage 
-#      controlling education and experience of the employee
+#      controlling education and experience of the employee. (model2)
 # e    The intercept of the model2 is negative. The intercepts in the
 #      linear regression arenot for the interpretation, since 
 #      the region where we are trying to interpret the data
-#      is actually not having any data points.
+#      is actually not having any data points. (model2)
 # f    For every year increase in the education of the employee
 #      the average hourly wage of the employee increases by 9.2%
-#      for controlling the experience and the tenure of the employee
+#      for controlling the experience and the tenure of the employee. (model3)
 # g    For every year increase in the experience of the employee
 #      the average hourly wage of the employee increases by 0.4%
 #      for controlling the education and the tenure of the employee
-# h    For every year increase in the tenure of the employee
+# h    For every year increase in the tenure of the employee. (model3)
 #      the average hourly wage of the employee increases by 2.21%
-#      for controlling the education and the experience of the employee
+#      for controlling the education and the experience of the employee. (model3)
