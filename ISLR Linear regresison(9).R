@@ -32,6 +32,7 @@ summary(reg_all)
 
 # The increase in every year usage of the car there is an 
 # increase in the mpg of the car by 0.75miles per gallon
+# keeping other predictors constant
 
 plot(reg_all)
 
