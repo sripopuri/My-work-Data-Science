@@ -1,3 +1,11 @@
+# Author: Sri Harish Popuri
+# Version: Intial draft - 1st version
+# This is code will be changed further
+
+# Note: In this code,
+# 10error = False Negative
+# 01error = False Positive
+
 # Clearing the workspace 
 rm(list = ls())  
 
@@ -8,9 +16,10 @@ library(caret)
 library(ggplot2)
 library(pROC) # For ROC curves
 library(e1071) # For SVM
+library(class) # For Knn
 
 # Setting the required working directory
-# setwd("D:/New folder/Kaggle/Liver patient Dataset")
+setwd("D:/New folder/Kaggle/Liver patient Dataset")
 
 data <- read.csv('Indian Liver Patient Dataset (ILPD).csv')
 
@@ -51,6 +60,7 @@ contrasts(data$is_patient)
 str(data)
 
 # Getting data with out NAs
+# **We can impute instead
 data_clean = data[complete.cases(data),]
 
 # Creating training and test samples
@@ -90,7 +100,7 @@ summary(logistic)
 #   sgot             -1.9692617  0.8158509  -2.414  0.01579 * 
 #   alkphos           2.2210014  1.2579300   1.766  0.07746 . 
 # ---
-#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 # 
 # (Dispersion parameter for binomial family taken to be 1)
 # 
@@ -185,9 +195,59 @@ ROC = roc(response = test$is_patient,
 plot(ROC)
 auc(ROC)
 
+############################### K-Nearest neighbors ##################################
+
+# Creating new variables for interpretability
+train_knn = train
+test_knn = test
+
+# Let us create some dummy variable for Gender in both train and test
+# Train data set
+gender = dummy(train_knn$gender)
+train_knn$gender = gender[,2]
+str(train_knn)
+# Test data set
+gender = dummy(test_knn$gender)
+test_knn$gender = gender[,2]
+str(test_knn)
+
+# Let us do scaling for Knn
+train_scale = scale(train_knn[,-11]) # Excluding response
+test_scale = scale(test_knn[,-11]) # Excluding response
+
+# Knn Model
+# Not sure how many neighbors to use
+# So let us run a loop and record the 
+# metrics for each number of neighbors
+
+Results_knn = matrix(0,nrow = 13, ncol = 4)
+colnames(Results_knn) = c('Neighbors','01error','10error','Accuracy')
+
+for(i in 1:13){
+  pred_knn = knn(train = train_scale,
+                 test = test_scale,
+                 cl = train_knn[,11],
+                 k = i + 2,
+                 prob = TRUE)
+  
+  knn_con = confusionMatrix(data = pred_knn, reference = test_knn[,11])
+  Results_knn[i,1] = i + 2
+  Results_knn[i,2] = knn_con$table[2,1]
+  Results_knn[i,3] = knn_con$table[1,2]
+  Results_knn[i,4] = knn_con$overall[1]
+  }
+
+Results_knn = as.data.frame(Results_knn)
+# When neighbors is 7, I am witnessing
+# a minimum 10,01 error as well as higher accuracy = 73.07%
 
 
-############################### SVM Model ##################################
+#####################################################################################
+
+
+
+
+############################### SVM Model #########################################
 
 # Let us build an SVM model on this data set
 sv_model = svm(is_patient~., data = train, kernel = "linear")
@@ -196,7 +256,7 @@ summary(sv_model)
 
 pred_sv = predict(sv_model,test)
 confusionMatrix(reference = as.factor(test$is_patient), data = pred_sv)
-#Accuracy is 71.79%, but all are 01errors!
+# Accuracy is 71.79%, but all are 01errors!
 # And this is exactly matching with the
 # logistic regression results of 0.3  threshold!!
 
@@ -214,7 +274,31 @@ best = tune.out$best.model
 pred_sv_tune = predict(best,test)
 confusionMatrix(reference = as.factor(test$is_patient), data = pred_sv_tune)
 
-plot(roc(response = test$is_patient,
-         predictor = as.numeric(pred_sv_tune)))
+# Both linear and radial svms are tried, and there is
+# no improvement in the accuracy of 10error rates
+# So let us fix on SVMs results as
+# Accuracy is 71.79%, and 10error = 0
 
-##########################################################################
+
+###################################################################################
+
+# If the client asks me for a thrshold value in the logistic regression to fix 
+# based on the data provided I would say a value of 0.4 because, since this
+# problem is related to Health industry, we cannot afford to have existence of
+# a 10error which is false negative. It costs more than a 01 error (false positve).
+# 
+# So I would create a Logistic regression model with 0.4 threshold.
+# 
+# But when it comes to both Knn and SVM I would vote for SVM since it has a less 
+# 10error which is 0! The accuracies of both the models are nearly the same.
+# 
+# In the next versions,
+# I would like to impute the missing values.
+# Apply principal components on the data and run the models again.
+# And see if there are any differences in our inferences.
+# Let us do some clustering in the next version.
+
+# Also I would like to change the approach of the finding the threshold
+# of the logistic in another way. I will run a cross validation on 6 different
+# sets and then observe the good accuracy and 10 error rates for 6 models
+# and then check the best threshold for fit
