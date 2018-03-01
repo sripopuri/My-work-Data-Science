@@ -5,6 +5,8 @@ This is repository is created in order to document my codes which I have been wo
 
 This book is considered as one of the primary first read books for those who are planning to step in to the field of data science. My documentation of the problems mentioned in this book will facilitate me to have a look at these concepts any time in future.
 
-Also, if you are an employer this will probably give you an idea of what all concepts I know. I will keep updating this repository on regular basis as far as possible. (This readme text file too!)
+Also, if you are an employer this will probably give you an idea of what all concepts I know. I will keep updating this repository on regular basis when ever I get time to solve more and more problems. (This readme text file too!)
+
+Any questions please feel free to ping me!
 
 Sri Harish Popuri, Data Scientist.
