@@ -9,4 +9,6 @@ Also, if you are an employer this will probably give you an idea of what all con
 
 Any questions please feel free to ping me!
 
+Please feel free to check out my other repositories "Web Scraping in R", "Indian Liver Patients Dataset"
+
 Sri Harish Popuri, Data Scientist.
