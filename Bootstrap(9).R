@@ -67,5 +67,5 @@ boot(data$medv,boot.tenth,R = 1000)
 # The tenth percentile value of the bootstrap
 # is same as the tenth percentile on the
 # actual data
-# The standard error of the tenth percentile 
+# The standard error of the tenth percentile,
 # is 0.4893. 
