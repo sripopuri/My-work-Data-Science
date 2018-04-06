@@ -37,7 +37,7 @@ t.test(data$medv)
 #   21.72953 23.33608
 
 # 95% confidence intervals using
-# Bootstrap model are
+# Bootstrap model are,
 # 21.72127 23.34435
 
 # Both the bootstrap confidence interval
